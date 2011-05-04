@@ -1494,7 +1494,6 @@ static unsigned long weighted_cpuload(const int cpu)
 {
 	return cpu_rq(cpu)->load.weight;
 }
-#endif
 
 /*
  * Return a high guess at the load of a migration-target cpu weighted
@@ -3330,7 +3329,7 @@ unsigned long long task_sched_runtime(struct task_struct *p)
 	u64 ns = 0;
 
 	rq = task_rq_lock(p, &flags);
-	ns = p->se.sum_exec_runtime; // -fixdh  + do_task_delta_exec(p, rq);
+	ns = p->se.sum_exec_runtime// -fixdh  + do_task_delta_exec(p, rq);
 	task_rq_unlock(rq, &flags);
 
 	return ns;
