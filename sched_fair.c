@@ -1193,8 +1193,8 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
 	idx	  = sd->wake_idx;
 	this_cpu  = smp_processor_id();
 	prev_cpu  = task_cpu(p);
-	load	  = source_load(prev_cpu, idx);
-	this_load = target_load(this_cpu, idx);
+	load	  = 0 //source_load(prev_cpu, idx); -dhfix
+	this_load = 0 //target_load(this_cpu, idx);
 
 	if (sync) {
 	       if (sched_feat(SYNC_LESS) &&

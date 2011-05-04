@@ -1233,48 +1233,7 @@ static int find_lowest_rq(struct task_struct *task)
 /* Will lock the rq it finds */
 static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
 {
-	struct rq *lowest_rq = NULL;
-	int tries;
-	int cpu;
-
-	for (tries = 0; tries < RT_MAX_TRIES; tries++) {
-		cpu = find_lowest_rq(task);
-
-		if ((cpu == -1) || (cpu == rq->cpu))
-			break;
-
-		lowest_rq = cpu_rq(cpu);
-
-		/* if the prio of this runqueue changed, try again */
-		if (double_lock_balance(rq, lowest_rq)) {
-			/*
-			 * We had to unlock the run queue. In
-			 * the mean time, task could have
-			 * migrated already or had its affinity changed.
-			 * Also make sure that it wasn't scheduled on its rq.
-			 */
-			if (unlikely(task_rq(task) != rq ||
-				     !cpumask_test_cpu(lowest_rq->cpu,
-						       &task->cpus_allowed) ||
-				     task_running(rq, task) ||
-				     !task->se.on_rq)) {
-
-				spin_unlock(&lowest_rq->lock);
-				lowest_rq = NULL;
-				break;
-			}
-		}
-
-		/* If this rq is still suitable use it. */
-		if (lowest_rq->rt.highest_prio.curr > task->prio)
-			break;
-
-		/* try again */
-		double_unlock_balance(rq, lowest_rq);
-		lowest_rq = NULL;
-	}
-
-	return lowest_rq;
+	return cpu_rq(0); //-fixdh
 }
 
 static struct task_struct *pick_next_pushable_task(struct rq *rq)

@@ -2947,8 +2947,6 @@ static void update_cpu_load(struct rq *this_rq)
 	}
 }
 
-#ifdef CONFIG_SMP
-
 /*
  * double_rq_lock - safely lock two runqueues
  *
@@ -3079,6 +3077,7 @@ static inline void init_sd_power_savings_stats(struct sched_domain *sd,
 	 * Busy processors will not participate in power savings
 	 * balance.
 	 */
+	/*
 	if (idle == CPU_NOT_IDLE || !(sd->flags & SD_POWERSAVINGS_BALANCE))
 		sds->power_savings_balance = 0;
 	else {
@@ -3086,6 +3085,7 @@ static inline void init_sd_power_savings_stats(struct sched_domain *sd,
 		sds->min_nr_running = ULONG_MAX;
 		sds->leader_nr_running = 0;
 	}
+	-fixdh */
 }
 
 /**
@@ -3102,31 +3102,32 @@ static inline void update_sd_power_savings_stats(struct sched_group *group,
 	struct sd_lb_stats *sds, int local_group, struct sg_lb_stats *sgs)
 {
 
-	if (!sds->power_savings_balance)
+//	if (!sds->power_savings_balance)
 		return;
 
 	/*
 	 * If the local group is idle or completely loaded
 	 * no need to do power savings balance at this domain
 	 */
-	if (local_group && (sds->this_nr_running >= sgs->group_capacity ||
-				!sds->this_nr_running))
-		sds->power_savings_balance = 0;
-
+//	if (local_group && (sds->this_nr_running >= sgs->group_capacity ||
+//				!sds->this_nr_running))
+//		sds->power_savings_balance = 0;
+//-fixdh
 	/*
 	 * If a group is already running at full capacity or idle,
 	 * don't include that group in power savings calculations
 	 */
-	if (!sds->power_savings_balance ||
+/*	if (!sds->power_savings_balance ||
 		sgs->sum_nr_running >= sgs->group_capacity ||
 		!sgs->sum_nr_running)
 		return;
-
+*/
 	/*
 	 * Calculate the group which has the least non-idle load.
 	 * This is the group from where we need to pick up the load
 	 * for saving power
 	 */
+		/*
 	if ((sgs->sum_nr_running < sds->min_nr_running) ||
 	    (sgs->sum_nr_running == sds->min_nr_running &&
 	     group_first_cpu(group) > group_first_cpu(sds->group_min))) {
@@ -3135,12 +3136,13 @@ static inline void update_sd_power_savings_stats(struct sched_group *group,
 		sds->min_load_per_task = sgs->sum_weighted_load /
 						sgs->sum_nr_running;
 	}
-
+*/
 	/*
 	 * Calculate the group which is almost near its
 	 * capacity but still has some space to pick up some load
 	 * from other group and save more power
 	 */
+		/*
 	if (sgs->sum_nr_running + 1 > sgs->group_capacity)
 		return;
 
@@ -3150,6 +3152,7 @@ static inline void update_sd_power_savings_stats(struct sched_group *group,
 		sds->group_leader = group;
 		sds->leader_nr_running = sgs->sum_nr_running;
 	}
+	*/
 }
 
 /**
@@ -3167,6 +3170,7 @@ static inline void update_sd_power_savings_stats(struct sched_group *group,
  * Returns 1 if there is potential to perform power-savings balance.
  * Else returns 0.
  */
+/* -fixdh
 static inline int check_power_save_busiest_group(struct sd_lb_stats *sds,
 					int this_cpu, unsigned long *imbalance)
 {
@@ -3183,7 +3187,9 @@ static inline int check_power_save_busiest_group(struct sd_lb_stats *sds,
 	return 1;
 
 }
+*/
 #else /* CONFIG_SCHED_MC || CONFIG_SCHED_SMT */
+/*
 static inline void init_sd_power_savings_stats(struct sched_domain *sd,
 	struct sd_lb_stats *sds, enum cpu_idle_type idle)
 {
@@ -3201,6 +3207,7 @@ static inline int check_power_save_busiest_group(struct sd_lb_stats *sds,
 {
 	return 0;
 }
+*/
 #endif /* CONFIG_SCHED_MC || CONFIG_SCHED_SMT */
 
 
@@ -3322,7 +3329,7 @@ unsigned long long task_sched_runtime(struct task_struct *p)
 	u64 ns = 0;
 
 	rq = task_rq_lock(p, &flags);
-	ns = p->se.sum_exec_runtime + do_task_delta_exec(p, rq);
+	ns = p->se.sum_exec_runtime// -fixdh  + do_task_delta_exec(p, rq);
 	task_rq_unlock(rq, &flags);
 
 	return ns;
@@ -3597,8 +3604,8 @@ void scheduler_tick(void)
 	perf_event_task_tick(curr, cpu);
 
 #ifdef CONFIG_SMP
-	rq->idle_at_tick = idle_cpu(cpu);
-	trigger_load_balance(rq, cpu);
+// -fixdh	rq->idle_at_tick = idle_cpu(cpu);
+	//trigger_load_balance(rq, cpu);
 #endif
 }
 
@@ -3801,9 +3808,6 @@ need_resched_nonpreemptible:
 	}
 
 	pre_schedule(rq, prev);
-
-	if (unlikely(!rq->nr_running))
-		idle_balance(cpu, rq);
 
 	put_prev_task(rq, prev);
 	next = pick_next_task(rq);
@@ -5529,10 +5533,13 @@ static int migration_thread(void *data)
 			break;
 		}
 
+		/*
 		if (rq->active_balance) {
 			active_load_balance(rq, cpu);
 			rq->active_balance = 0;
 		}
+		-fixdh
+		*/
 
 		head = &rq->migration_queue;
 
@@ -7891,9 +7898,11 @@ void __init sched_init(void)
 	INIT_HLIST_HEAD(&init_task.preempt_notifiers);
 #endif
 
+	/* fixdh
 #ifdef CONFIG_SMP
 	open_softirq(SCHED_SOFTIRQ, run_rebalance_domains);
 #endif
+*/
 
 #ifdef CONFIG_RT_MUTEXES
 	plist_head_init(&init_task.pi_waiters, &init_task.pi_lock);
@@ -7922,13 +7931,14 @@ void __init sched_init(void)
 
 	/* Allocate the nohz_cpu_mask if CONFIG_CPUMASK_OFFSTACK */
 	zalloc_cpumask_var(&nohz_cpu_mask, GFP_NOWAIT);
+	/* fixdh
 #ifdef CONFIG_SMP
 #ifdef CONFIG_NO_HZ
 	zalloc_cpumask_var(&nohz.cpu_mask, GFP_NOWAIT);
 	alloc_cpumask_var(&nohz.ilb_grp_nohz_mask, GFP_NOWAIT);
 #endif
 	zalloc_cpumask_var(&cpu_isolated_map, GFP_NOWAIT);
-#endif /* SMP */
+#endif  SMP */
 
 	perf_event_init();
 
