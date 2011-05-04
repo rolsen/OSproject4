@@ -1822,13 +1822,6 @@ static const struct sched_class fair_sched_class = {
 	.pick_next_task		= pick_next_task_fair,
 	.put_prev_task		= put_prev_task_fair,
 
-#ifdef CONFIG_SMP
-	.select_task_rq		= select_task_rq_fair,
-
-	.load_balance		= load_balance_fair,
-	.move_one_task		= move_one_task_fair,
-#endif
-
 	.set_curr_task          = set_curr_task_fair,
 	.task_tick		= task_tick_fair,
 	.task_new		= task_new_fair,
