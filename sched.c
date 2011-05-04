@@ -655,7 +655,7 @@ static inline int cpu_of(struct rq *rq)
 #define for_each_domain(cpu, __sd) \
 	for (__sd = rcu_dereference(cpu_rq(cpu)->sd); __sd; __sd = __sd->parent)
 
-#define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+#define cpu_rq(cpu)		(&per_cpu(runqueues, 0))
 #define this_rq()		(&__get_cpu_var(runqueues))
 #define task_rq(p)		cpu_rq(task_cpu(p))
 #define cpu_curr(cpu)		(cpu_rq(cpu)->curr)
