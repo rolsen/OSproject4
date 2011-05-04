@@ -1193,8 +1193,8 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
 	idx	  = sd->wake_idx;
 	this_cpu  = smp_processor_id();
 	prev_cpu  = task_cpu(p);
-	load	  = 0; //source_load(prev_cpu, idx); -dhfix
-	this_load = 0; //target_load(this_cpu, idx);
+	load	  = 0 //source_load(prev_cpu, idx); -dhfix
+	this_load = 0 //target_load(this_cpu, idx);
 
 	if (sync) {
 	       if (sched_feat(SYNC_LESS) &&
@@ -1270,7 +1270,56 @@ static int wake_affine(struct sched_domain *sd, struct task_struct *p, int sync)
  * find_idlest_group finds and returns the least busy CPU group within the
  * domain.
  */
+static struct sched_group *
+find_idlest_group(struct sched_domain *sd, struct task_struct *p,
+		  int this_cpu, int load_idx)
+{
+	struct sched_group *idlest = NULL, *this = NULL, *group = sd->groups;
+	unsigned long min_load = ULONG_MAX, this_load = 0;
+	int imbalance = 100 + (sd->imbalance_pct-100)/2;
 
+	do {
+		unsigned long load, avg_load;
+		int local_group;
+		int i;
+
+		/* Skip over this group if it has no CPUs allowed */
+		if (!cpumask_intersects(sched_group_cpus(group),
+					&p->cpus_allowed))
+			continue;
+
+		local_group = cpumask_test_cpu(this_cpu,
+					       sched_group_cpus(group));
+
+		/* Tally up the load of all CPUs in the group */
+		avg_load = 0;
+
+		for_each_cpu(i, sched_group_cpus(group)) {
+			/* Bias balancing toward cpus of our domain */
+			if (local_group)
+				load = source_load(i, load_idx);
+			else
+				load = target_load(i, load_idx);
+
+			avg_load += load;
+		}
+
+		/* Adjust by relative CPU power of the group */
+		avg_load = (avg_load * SCHED_LOAD_SCALE) / group->cpu_power;
+
+		if (local_group) {
+			this_load = avg_load;
+			this = group;
+		} else if (avg_load < min_load) {
+			min_load = avg_load;
+			idlest = group;
+		}
+	} while (group = group->next, group != sd->groups);
+
+	if (!idlest || 100*this_load < imbalance*min_load)
+		return NULL;
+	return idlest;
+}
 
 /*
  * find_idlest_cpu - find the idlest cpu among the cpus in group.
@@ -1306,7 +1355,128 @@ find_idlest_cpu(struct sched_group *group, struct task_struct *p, int this_cpu)
  *
  * preempt must be disabled.
  */
+static int select_task_rq_fair(struct task_struct *p, int sd_flag, int wake_flags)
+{
+	struct sched_domain *tmp, *affine_sd = NULL, *sd = NULL;
+	int cpu = smp_processor_id();
+	int prev_cpu = task_cpu(p);
+	int new_cpu = cpu;
+	int want_affine = 0;
+	int want_sd = 1;
+	int sync = wake_flags & WF_SYNC;
 
+	if (sd_flag & SD_BALANCE_WAKE) {
+		if (sched_feat(AFFINE_WAKEUPS) &&
+		    cpumask_test_cpu(cpu, &p->cpus_allowed))
+			want_affine = 1;
+		new_cpu = prev_cpu;
+	}
+
+	rcu_read_lock();
+	for_each_domain(cpu, tmp) {
+		/*
+		 * If power savings logic is enabled for a domain, see if we
+		 * are not overloaded, if so, don't balance wider.
+		 */
+		if (tmp->flags & (SD_POWERSAVINGS_BALANCE|SD_PREFER_LOCAL)) {
+			unsigned long power = 0;
+			unsigned long nr_running = 0;
+			unsigned long capacity;
+			int i;
+
+			for_each_cpu(i, sched_domain_span(tmp)) {
+				power += power_of(i);
+				nr_running += cpu_rq(i)->cfs.nr_running;
+			}
+
+			capacity = DIV_ROUND_CLOSEST(power, SCHED_LOAD_SCALE);
+
+			if (tmp->flags & SD_POWERSAVINGS_BALANCE)
+				nr_running /= 2;
+
+			if (nr_running < capacity)
+				want_sd = 0;
+		}
+
+		if (want_affine && (tmp->flags & SD_WAKE_AFFINE) &&
+		    cpumask_test_cpu(prev_cpu, sched_domain_span(tmp))) {
+
+			affine_sd = tmp;
+			want_affine = 0;
+		}
+
+		if (!want_sd && !want_affine)
+			break;
+
+		if (!(tmp->flags & sd_flag))
+			continue;
+
+		if (want_sd)
+			sd = tmp;
+	}
+
+	if (sched_feat(LB_SHARES_UPDATE)) {
+		/*
+		 * Pick the largest domain to update shares over
+		 */
+		tmp = sd;
+		if (affine_sd && (!tmp ||
+				  cpumask_weight(sched_domain_span(affine_sd)) >
+				  cpumask_weight(sched_domain_span(sd))))
+			tmp = affine_sd;
+
+		if (tmp)
+			update_shares(tmp);
+	}
+
+	if (affine_sd && wake_affine(affine_sd, p, sync)) {
+		new_cpu = cpu;
+		goto out;
+	}
+
+	while (sd) {
+		int load_idx = sd->forkexec_idx;
+		struct sched_group *group;
+		int weight;
+
+		if (!(sd->flags & sd_flag)) {
+			sd = sd->child;
+			continue;
+		}
+
+		if (sd_flag & SD_BALANCE_WAKE)
+			load_idx = sd->wake_idx;
+
+		group = find_idlest_group(sd, p, cpu, load_idx);
+		if (!group) {
+			sd = sd->child;
+			continue;
+		}
+
+		new_cpu = find_idlest_cpu(group, p, cpu);
+		if (new_cpu == -1 || new_cpu == cpu) {
+			/* Now try balancing at a lower domain level of cpu */
+			sd = sd->child;
+			continue;
+		}
+
+		/* Now try balancing at a lower domain level of new_cpu */
+		cpu = new_cpu;
+		weight = cpumask_weight(sched_domain_span(sd));
+		sd = NULL;
+		for_each_domain(cpu, tmp) {
+			if (weight <= cpumask_weight(sched_domain_span(tmp)))
+				break;
+			if (tmp->flags & sd_flag)
+				sd = tmp;
+		}
+		/* while loop will break here if sd == NULL */
+	}
+
+out:
+	rcu_read_unlock();
+	return new_cpu;
+}
 #endif /* CONFIG_SMP */
 
 /*
