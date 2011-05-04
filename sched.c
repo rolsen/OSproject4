@@ -3354,7 +3354,7 @@ unsigned long long thread_group_sched_runtime(struct task_struct *p)
 
 	rq = task_rq_lock(p, &flags);
 	thread_group_cputime(p, &totals);
-	ns = totals.sum_exec_runtime + do_task_delta_exec(p, rq);
+	ns = totals.sum_exec_runtime; // + do_task_delta_exec(p, rq);
 	task_rq_unlock(rq, &flags);
 
 	return ns;
