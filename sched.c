@@ -2544,7 +2544,7 @@ static void __sched_fork(struct task_struct *p)
  */
 void sched_fork(struct task_struct *p, int clone_flags)
 {
-	int cpu = get_cpu();
+	int cpu = 0; //dh get_cpu();
 
 	__sched_fork(p);
 
