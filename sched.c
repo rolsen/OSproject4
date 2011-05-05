@@ -5426,17 +5426,19 @@ pick_next_task(struct rq *rq)
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 		struct cfs_rq *cfs_rq = &rq->cfs;
-		//if (unlikely(!cfs_rq->nr_running))
-		//	return NULL;
+		if (unlikely(!cfs_rq->nr_running)) {
+			p = NULL;
+		} else {
 
-		do {
-			se = pick_next_entity(cfs_rq);
-			set_next_entity(cfs_rq, se);
-			cfs_rq = group_cfs_rq(se);
-		} while (cfs_rq);
+			do {
+				se = pick_next_entity(cfs_rq);
+				set_next_entity(cfs_rq, se);
+				cfs_rq = group_cfs_rq(se);
+			} while (cfs_rq);
 
-		p = task_of(se);
-		hrtick_start_fair(rq, p);
+			p = task_of(se);
+			hrtick_start_fair(rq, p);
+		}
 
 		if (likely(p))
 		return p;
