@@ -484,6 +484,32 @@ struct rt_rq {
 
 #ifdef CONFIG_SMP
 
+// master runqueue  -dh
+struct master_rq {
+	/* lock! */
+	spinlock_t lock;
+	/* semaphore */
+	struct semaphore sem;
+
+	//maybe fix this later
+	rq *all_runqueues[256];
+
+	//number that holds the total number of runqueues
+	int number;
+}
+
+// make it happen -dh
+struct master_rq mrq;
+
+//function to insert a runqueue in master rq
+void add_rq_to_master(struct rq *rq, struct master_rq *mrq) {
+	lock_kernel(); //quick and dirty
+	mrq->all_runqueues[number++] = rq;
+	unlock_kernel();
+}
+
+
+
 /*
  * We add the notion of a root-domain which will be used to define per-domain
  * variables. Each exclusive cpuset essentially defines an island domain by
@@ -9527,6 +9553,7 @@ void __init sched_init(void)
 #endif
 		init_rq_hrtick(rq);
 		atomic_set(&rq->nr_iowait, 0);
+		add_rq_to_master(&rq, &mrq); //-dh
 	}
 
 	set_load_weight(&init_task);
