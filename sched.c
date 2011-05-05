@@ -5477,7 +5477,7 @@ pick_next_task(struct rq *rq)
 		if (likely(p))
 			return p;*/
 	}
-	if(se) { set_task_cpu(p, smp_processor_id()); }
+//	if(se) { set_task_cpu(p, smp_processor_id()); }
 	// -dh
 
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
