@@ -5452,7 +5452,7 @@ pick_next_task(struct rq *rq)
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
 			if (unlikely(!cfs_rq->nr_running))  {
-				continue;
+				printk("test");
 			}
 			/*
 	
