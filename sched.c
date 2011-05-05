@@ -5441,7 +5441,7 @@ pick_next_task(struct rq *rq)
 			}
 		}		
 		//task has been found / rebalance the tree
-		cfs_rq = se->cfs_rq;
+		cfs_rq = cfs_rq_of(se);
 		do {
 			set_next_entity(cfs_rq, se);
 			cfs_rq = group_cfs_rq(se);
