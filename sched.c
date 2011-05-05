@@ -5451,10 +5451,10 @@ pick_next_task(struct rq *rq)
 		for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
-			/*if (unlikely(!cfs_rq->nr_running))  {
-				p = NULL;
+			if (unlikely(!cfs_rq->nr_running))  {
 				continue;
 			}
+			/*
 	
 			se = pick_next_entity(cfs_rq);
 			if(s == 0) {
