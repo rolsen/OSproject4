@@ -5451,7 +5451,7 @@ pick_next_task(struct rq *rq)
 		for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
-			if (unlikely(!cfs_rq->nr_running))  {
+			/*if (unlikely(!cfs_rq->nr_running))  {
 				p = NULL;
 				continue;
 			}
@@ -5466,7 +5466,7 @@ pick_next_task(struct rq *rq)
 					vruntimes = se->vruntime; 
 					loc = i;
 				}
-			}
+			}*/
 		}		
 		//rq = mrq.all_runqueues[loc];
 		unlock_kernel();
