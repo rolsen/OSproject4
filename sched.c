@@ -501,13 +501,15 @@ struct master_rq {
 // make it happen -dh
 struct master_rq mrq;
 
-//function to insert a runqueue in master rq
 void mrq_init(struct master_rq *mrq) {
+	prink("Init mrq!");
 	mrq->number = 0;
 }
+//function to insert a runqueue in master rq
 void add_rq_to_master(struct rq *rq, struct master_rq *mrq) {
 	lock_kernel(); //quick and dirty
 	mrq->all_runqueues[mrq->number++] = rq;
+	prink("mrq number: %d\n", mrq->number);
 	unlock_kernel();
 }
 
