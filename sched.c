@@ -5448,13 +5448,12 @@ pick_next_task(struct rq *rq)
 //		p = fair_sched_class.pick_next_task(rq);
 		struct cfs_rq *cfs_rq;
 		lock_kernel();
-		for(i = 0; i < mrq.number; i++) {
+	/*	for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
 			//if (unlikely(!cfs_rq->nr_running))  {
 			//	printk("test");
 			//}
-			/*
 	
 			se = pick_next_entity(cfs_rq);
 			if(s == 0) {
@@ -5466,8 +5465,8 @@ pick_next_task(struct rq *rq)
 					vruntimes = se->vruntime; 
 					loc = i;
 				}
-			}*/
-		}		
+			}
+		}		*/
 		//rq = mrq.all_runqueues[loc];
 		unlock_kernel();
 		//task has been found / rebalance the tree
