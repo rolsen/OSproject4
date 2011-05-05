@@ -5418,7 +5418,7 @@ pick_next_task(struct rq *rq)
 	
 	int i;
 	u64 vruntimes;
-	struct sched_entity *se;
+	struct sched_entity *se = NULL;
 
 	/*
 	 * Optimization: we know that if all tasks are in
@@ -5466,17 +5466,18 @@ pick_next_task(struct rq *rq)
 				}
 			}
 		}
+		p = task_of(se);
 		//rq = mrq.all_runqueues[loc];
 		//task has been found / rebalance the tree
 		/*cfs_rq = cfs_rq_of(se);
 		set_next_entity(cfs_rq, se);
 
-		p = task_of(se);
 		hrtick_start_fair(rq, p);
 
 		if (likely(p))
 			return p;*/
 	}
+	if(se) { set_task_cpu(p, smp_processor_id()); }
 	// -dh
 
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
