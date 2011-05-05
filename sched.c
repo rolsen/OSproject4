@@ -5426,8 +5426,6 @@ pick_next_task(struct rq *rq)
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 		struct cfs_rq *cfs_rq = &rq->cfs;
-		struct sched_entity *se;
-
 		if (unlikely(!cfs_rq->nr_running))
 			return NULL;
 
