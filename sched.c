@@ -9064,7 +9064,8 @@ void __init sched_init(void)
 	update_shares_data = __alloc_percpu(nr_cpu_ids * sizeof(unsigned long),
 					    __alignof__(unsigned long));
 #endif
-	for_each_possible_cpu(i) {
+//	for_each_possible_cpu(i) { //i
+		i = 0;
 		struct rq *rq;
 
 		rq = cpu_rq(i);
@@ -9151,7 +9152,7 @@ void __init sched_init(void)
 #endif
 		init_rq_hrtick(rq);
 		atomic_set(&rq->nr_iowait, 0);
-	}
+	//}
 
 	set_load_weight(&init_task);
 
