@@ -5424,7 +5424,7 @@ pick_next_task(struct rq *rq)
 	 * Optimization: we know that if all tasks are in
 	 * the fair class we can call that function directly:
 	 */
-	if (likely(rq->nr_running == rq->cfs.nr_running)) {
+	/*if (likely(rq->nr_running == rq->cfs.nr_running)) {
 		struct cfs_rq *cfs_rq = &rq->cfs;
 		if (unlikely(!cfs_rq->nr_running)) {
 			p = NULL;
@@ -5441,11 +5441,12 @@ pick_next_task(struct rq *rq)
 
 		if (likely(p))
 		return p;
-	} 
+	} */
 	int s =0;
-//	if (likely(rq->nr_running == rq->cfs.nr_running)) {
+	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
-/*		struct cfs_rq *cfs_rq;
+		struct cfs_rq *cfs_rq;
+		kernel_lock();
 		for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
@@ -5462,20 +5463,17 @@ pick_next_task(struct rq *rq)
 				vruntimes = min(vruntimes, se->vruntime);
 			}
 		}		
+		kernel_unlock();
 		//task has been found / rebalance the tree
 		cfs_rq = cfs_rq_of(se);
-		do {
-			se = pick_next_entity(cfs_rq);
-			set_next_entity(cfs_rq, se);
-			cfs_rq = group_cfs_rq(se);
-		} while (cfs_rq);
+		set_next_entity(cfs_rq, se);
 
 		p = task_of(se);
 		hrtick_start_fair(rq, p);
 
 		if (likely(p))
 			return p;
-	}*/
+	}
 	// -dh
 
 
