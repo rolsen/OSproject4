@@ -5425,7 +5425,21 @@ pick_next_task(struct rq *rq)
 	 * the fair class we can call that function directly:
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
-		p = fair_sched_class.pick_next_task(rq);
+		struct cfs_rq *cfs_rq = &rq->cfs;
+		struct sched_entity *se;
+
+		if (unlikely(!cfs_rq->nr_running))
+			return NULL;
+
+		do {
+			se = pick_next_entity(cfs_rq);
+			set_next_entity(cfs_rq, se);
+			cfs_rq = group_cfs_rq(se);
+		} while (cfs_rq);
+
+		p = task_of(se);
+		hrtick_start_fair(rq, p);
+
 		if (likely(p))
 		return p;
 	}
@@ -5435,9 +5449,9 @@ pick_next_task(struct rq *rq)
 	/*	for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
-			if (unlikely(!cfs_rq->nr_running))
-				continue;
-
+	//		if (unlikely(!cfs_rq->nr_running))
+	//			continue;
+	
 			se = pick_next_entity(cfs_rq);
 			if(i == 0) {
 				vruntimes = se->vruntime;
