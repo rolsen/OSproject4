@@ -5465,6 +5465,7 @@ pick_next_task(struct rq *rq)
 				if(vruntimes > se->vruntime) {
 					vruntimes = se->vruntime; 
 					loc = i;
+				}
 			}
 		}		
 		rq = mrq.all_runqueues[loc];
