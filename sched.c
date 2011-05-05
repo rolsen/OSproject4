@@ -496,6 +496,7 @@ struct master_rq {
 
 	//number that holds the total number of runqueues
 	int number;
+	number = 0;
 };
 
 // make it happen -dh
@@ -9382,7 +9383,7 @@ void __init sched_init(void)
 {
 	int i, j;
 	unsigned long alloc_size = 0, ptr;
-	mrq_init(&mrq);
+	//mrq_init(&mrq);
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	alloc_size += 2 * nr_cpu_ids * sizeof(void **);
