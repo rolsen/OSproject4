@@ -5438,15 +5438,16 @@ pick_next_task(struct rq *rq)
 			} else {
 				vruntimes = min(vruntimes, se->vruntime);
 			}
-
-			do {
-				set_next_entity(cfs_rq, se);
-				cfs_rq = group_cfs_rq(se);
-			} while (cfs_rq);
-
-			p = task_of(se);
-			hrtick_start_fair(rq, p);
 		}		
+		//task has been found / rebalance the tree
+		do {
+			set_next_entity(cfs_rq, se);
+			cfs_rq = group_cfs_rq(se);
+		} while (cfs_rq);
+
+		p = task_of(se);
+		hrtick_start_fair(rq, p);
+
 		if (likely(p))
 			return p;
 	}
