@@ -496,21 +496,20 @@ struct master_rq {
 
 	//number that holds the total number of runqueues
 	int number;
-	number = 0;
 };
 
 // make it happen -dh
 struct master_rq mrq;
 
 void mrq_init(struct master_rq *mrq) {
-	prink("Init mrq!");
+	printk("Init mrq!");
 	mrq->number = 0;
 }
 //function to insert a runqueue in master rq
 void add_rq_to_master(struct rq *rq, struct master_rq *mrq) {
 	lock_kernel(); //quick and dirty
 	mrq->all_runqueues[mrq->number++] = rq;
-	prink("mrq number: %d\n", mrq->number);
+	printk("mrq number: %d\n", mrq->number);
 	unlock_kernel();
 }
 
@@ -9383,7 +9382,7 @@ void __init sched_init(void)
 {
 	int i, j;
 	unsigned long alloc_size = 0, ptr;
-	//mrq_init(&mrq);
+	mrq_init(&mrq);
 
 #ifdef CONFIG_FAIR_GROUP_SCHED
 	alloc_size += 2 * nr_cpu_ids * sizeof(void **);
