@@ -5446,7 +5446,7 @@ pick_next_task(struct rq *rq)
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
 		struct cfs_rq *cfs_rq;
-		kernel_lock();
+		lock_kernel();
 		for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
@@ -5463,7 +5463,7 @@ pick_next_task(struct rq *rq)
 				vruntimes = min(vruntimes, se->vruntime);
 			}
 		}		
-		kernel_unlock();
+		unlock_kernel();
 		//task has been found / rebalance the tree
 		cfs_rq = cfs_rq_of(se);
 		set_next_entity(cfs_rq, se);
