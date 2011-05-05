@@ -5426,8 +5426,8 @@ pick_next_task(struct rq *rq)
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 		struct cfs_rq *cfs_rq = &rq->cfs;
-		if (unlikely(!cfs_rq->nr_running))
-			return NULL;
+		//if (unlikely(!cfs_rq->nr_running))
+		//	return NULL;
 
 		do {
 			se = pick_next_entity(cfs_rq);
