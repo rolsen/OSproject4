@@ -2579,7 +2579,7 @@ void sched_fork(struct task_struct *p, int clone_flags)
 		p->sched_class = &fair_sched_class;
 
 #ifdef CONFIG_SMP
-	cpu = p->sched_class->select_task_rq(p, SD_BALANCE_FORK, 0);
+	cpu = 0; //dh = p->sched_class->select_task_rq(p, SD_BALANCE_FORK, 0);
 #endif
 	set_task_cpu(p, cpu);
 
