@@ -1,0 +1,2 @@
+timeslice length: run vmstat (context-switches are the cs field)
+ 
