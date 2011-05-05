@@ -5415,7 +5415,11 @@ asmlinkage void __sched schedule(void)
 	unsigned long *switch_count;
 	struct rq *rq;
 	int cpu;
-
+  int i = 0;
+  
+  /* temp &&& -ro */
+  for(i, i<1000, i++);
+    
 need_resched:
 	preempt_disable();
 	cpu = smp_processor_id();
