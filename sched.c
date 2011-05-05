@@ -5451,7 +5451,6 @@ pick_next_task(struct rq *rq)
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
 			if (unlikely(!cfs_rq->nr_running))  {
-				printk("test");
 				continue;
 			}
 	
@@ -5467,7 +5466,7 @@ pick_next_task(struct rq *rq)
 				}
 			}
 		}
-		//rq = mrq.all_runqueues[loc];
+		rq = mrq.all_runqueues[loc];
 		//task has been found / rebalance the tree
 		/*cfs_rq = cfs_rq_of(se);
 		set_next_entity(cfs_rq, se);
