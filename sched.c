@@ -5442,7 +5442,7 @@ pick_next_task(struct rq *rq)
 		if (likely(p))
 		return p;
 	} */
-	int s =0;
+	int s = 0;
 	int loc = 0;
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
@@ -5468,7 +5468,7 @@ pick_next_task(struct rq *rq)
 				}
 			}
 		}		
-		rq = mrq.all_runqueues[loc];
+		//rq = mrq.all_runqueues[loc];
 		unlock_kernel();
 		//task has been found / rebalance the tree
 		/*cfs_rq = cfs_rq_of(se);
