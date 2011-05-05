@@ -5426,8 +5426,9 @@ pick_next_task(struct rq *rq)
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
+		struct cfs_rq *cfs_rq;
 		for(i = 0; i < mrq.number; i++) {
-			struct cfs_rq *cfs_rq = &mrq.all_runqueues[i]->cfs;
+			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
 			if (unlikely(!cfs_rq->nr_running))
 				continue;
@@ -5440,6 +5441,7 @@ pick_next_task(struct rq *rq)
 			}
 		}		
 		//task has been found / rebalance the tree
+		cfs_rq = se->cfs_rq;
 		do {
 			set_next_entity(cfs_rq, se);
 			cfs_rq = group_cfs_rq(se);
