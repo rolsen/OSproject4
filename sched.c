@@ -5466,6 +5466,7 @@ pick_next_task(struct rq *rq)
 				}
 			}
 		}
+		prink("loc is %d\n", loc);
 		rq = mrq.all_runqueues[loc];
 		//task has been found / rebalance the tree
 		/*cfs_rq = cfs_rq_of(se);
