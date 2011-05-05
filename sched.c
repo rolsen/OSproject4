@@ -5420,41 +5420,40 @@ pick_next_task(struct rq *rq)
 	u64 vruntimes;
 	struct sched_entity *se;
 
-	for(i = 0; i < mrq.number; i++) {
-		struct cfs_rq *cfs_rq = &mrq.all_runqueues[i].rq->cfs;
-
-		if (unlikely(!cfs_rq->nr_running))
-			continue;
-
-		se = pick_next_entity(cfs_rq);
-		if(i == 0) {
-			vruntimes = se.vruntime;
-		} else {
-			vruntimes = min(vruntimes, se.vruntime);
-
-		do {
-			se = pick_next_entity(cfs_rq);
-			set_next_entity(cfs_rq, se);
-			cfs_rq = group_cfs_rq(se);
-		} while (cfs_rq);
-
-		p = task_of(se);
-		hrtick_start_fair(rq, p);
-
-		return p;
-	}
-
-	// -dh
-
 	/*
 	 * Optimization: we know that if all tasks are in
 	 * the fair class we can call that function directly:
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
-		p = fair_sched_class.pick_next_task(rq);
+//		p = fair_sched_class.pick_next_task(rq);
+		for(i = 0; i < mrq.number; i++) {
+			struct cfs_rq *cfs_rq = &mrq.all_runqueues[i]->rq->cfs;
+
+			if (unlikely(!cfs_rq->nr_running))
+				continue;
+
+			se = pick_next_entity(cfs_rq);
+			if(i == 0) {
+				vruntimes = se->vruntime;
+			} else {
+				vruntimes = min(vruntimes, se->vruntime);
+			}
+
+			do {
+				set_next_entity(cfs_rq, se);
+				cfs_rq = group_cfs_rq(se);
+			} while (cfs_rq);
+
+			p = task_of(se);
+			hrtick_start_fair(rq, p);
+		}		
 		if (likely(p))
 			return p;
 	}
+
+
+	// -dh
+
 
 	// rt tasks scheduler
 	class = sched_class_highest;
