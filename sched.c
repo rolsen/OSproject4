@@ -5425,8 +5425,13 @@ pick_next_task(struct rq *rq)
 	 * the fair class we can call that function directly:
 	 */
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
+		p = fair_sched_class.pick_next_task(rq);
+		if (likely(p))
+		return p;
+	}
+//	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
-		struct cfs_rq *cfs_rq;
+//		struct cfs_rq *cfs_rq;
 	/*	for(i = 0; i < mrq.number; i++) {
 			cfs_rq = &mrq.all_runqueues[i]->cfs;
 
@@ -5442,8 +5447,8 @@ pick_next_task(struct rq *rq)
 		}*/		
 		//task has been found / rebalance the tree
 		//cfs_rq = cfs_rq_of(se);
-		do {
-			se = pick_next_entity(cfs_rq)
+/*		do {
+			se = pick_next_entity(cfs_rq);
 			set_next_entity(cfs_rq, se);
 			cfs_rq = group_cfs_rq(se);
 		} while (cfs_rq);
@@ -5454,6 +5459,7 @@ pick_next_task(struct rq *rq)
 		if (likely(p))
 			return p;
 	}
+	*/
 
 
 	// -dh
