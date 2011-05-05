@@ -2544,7 +2544,7 @@ static void __sched_fork(struct task_struct *p)
  */
 void sched_fork(struct task_struct *p, int clone_flags)
 {
-	int cpu = 0; //dh get_cpu();
+	int cpu = get_cpu();
 
 	__sched_fork(p);
 
@@ -2579,7 +2579,7 @@ void sched_fork(struct task_struct *p, int clone_flags)
 		p->sched_class = &fair_sched_class;
 
 #ifdef CONFIG_SMP
-	cpu = 0; //dh = p->sched_class->select_task_rq(p, SD_BALANCE_FORK, 0);
+	cpu = 0 = p->sched_class->select_task_rq(p, SD_BALANCE_FORK, 0);
 #endif
 	set_task_cpu(p, cpu);
 
@@ -5042,7 +5042,7 @@ asmlinkage void __sched schedule(void)
 
 need_resched:
 	preempt_disable();
-	cpu = 0; // dhsmp_processor_id();
+	cpu = smp_processor_id();
 	rq = cpu_rq(cpu);
 	rcu_sched_qs(cpu);
 	prev = rq->curr;
