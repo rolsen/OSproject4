@@ -496,15 +496,16 @@ struct master_rq {
 
 	//number that holds the total number of runqueues
 	int number;
-}
+};
 
 // make it happen -dh
 struct master_rq mrq;
+mrq.number = 0;
 
 //function to insert a runqueue in master rq
 void add_rq_to_master(struct rq *rq, struct master_rq *mrq) {
 	lock_kernel(); //quick and dirty
-	mrq->all_runqueues[number++] = rq;
+	mrq->all_runqueues[mrq->number++] = rq;
 	unlock_kernel();
 }
 
