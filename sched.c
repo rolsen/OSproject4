@@ -492,7 +492,7 @@ struct master_rq {
 	struct semaphore sem;
 
 	//maybe fix this later
-	rq *all_runqueues[256];
+	struct rq *all_runqueues[256];
 
 	//number that holds the total number of runqueues
 	int number;
