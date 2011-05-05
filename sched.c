@@ -5443,6 +5443,7 @@ pick_next_task(struct rq *rq)
 		return p;
 	} */
 	int s =0;
+	int loc;
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 //		p = fair_sched_class.pick_next_task(rq);
 		struct cfs_rq *cfs_rq;
@@ -5458,24 +5459,34 @@ pick_next_task(struct rq *rq)
 			se = pick_next_entity(cfs_rq);
 			if(s == 0) {
 				vruntimes = se->vruntime;
+				loc = i;
 				s++;
 			} else {
-				vruntimes = min(vruntimes, se->vruntime);
+				if(vruntimes > se->vruntime) {
+					vruntimes = se->vruntime; 
+					loc = i;
 			}
 		}		
+		rq = mrq[loc];
 		unlock_kernel();
 		//task has been found / rebalance the tree
-		cfs_rq = cfs_rq_of(se);
+		/*cfs_rq = cfs_rq_of(se);
 		set_next_entity(cfs_rq, se);
 
 		p = task_of(se);
 		hrtick_start_fair(rq, p);
 
 		if (likely(p))
-			return p;
+			return p;*/
 	}
 	// -dh
 
+	if (likely(rq->nr_running == rq->cfs.nr_running)) {
+		p = fair_sched_class.pick_next_task(rq);
+		if (likely(p))
+		return p;
+	}
+		
 
 	// rt tasks scheduler
 	class = sched_class_highest;
