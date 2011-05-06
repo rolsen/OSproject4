@@ -5411,7 +5411,7 @@ static inline struct rq * pick_next_rq(void) {
 	int i;
 	u64 vruntimes;
 	struct sched_entity *se = NULL;
-	cpu = smp_processor_id();
+	int cpu = smp_processor_id();
 	struct rq *rq;
 
 	int s = 0;
