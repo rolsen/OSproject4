@@ -5507,7 +5507,8 @@ need_resched_nonpreemptible:
 	if (sched_feat(HRTICK))
 		hrtick_clear(rq);
 
-	spin_lock_irq(&rq->lock);
+	//spin_lock_irq(&rq->lock);
+	double_rq_lock(rq, next_rq);
 	update_rq_clock(rq);
 	clear_tsk_need_resched(prev);
 
@@ -5525,7 +5526,7 @@ need_resched_nonpreemptible:
 		idle_balance(cpu, rq);
 
 	put_prev_task(rq, prev);
-	next = pick_next_task(rq);
+	next = pick_next_task(next_rq);
 
 	if (likely(prev != next)) {
 		sched_info_switch(prev, next);
@@ -5543,9 +5544,11 @@ need_resched_nonpreemptible:
 		cpu = smp_processor_id();
 		rq = cpu_rq(cpu);
 	} else
-		spin_unlock_irq(&rq->lock);
+		double_rq_unlock(rq, next_rq);
+		//spin_unlock_irq(&rq->lock);
 
-	post_schedule(rq);
+
+	post_schedule(next_rq);
 
 	if (unlikely(reacquire_kernel_lock(current) < 0))
 		goto need_resched_nonpreemptible;
