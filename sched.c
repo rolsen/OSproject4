@@ -5487,7 +5487,7 @@ asmlinkage void __sched schedule(void)
 {
 	struct task_struct *prev, *next;
 	unsigned long *switch_count;
-	struct rq *rq;
+	struct rq *rq, *next_rq;
 	int cpu;
 
 need_resched:
