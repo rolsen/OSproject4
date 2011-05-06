@@ -5405,6 +5405,50 @@ static void put_prev_task(struct rq *rq, struct task_struct *p)
 	p->sched_class->put_prev_task(rq, p);
 }
 
+
+static inline struct rq * pick_next_rq(void) {
+	
+	int i;
+	u64 vruntimes;
+	struct sched_entity *se = NULL;
+	cpu = smp_processor_id();
+	struct rq *rq;
+
+	int s = 0;
+	int loc = 0;
+//		p = fair_sched_class.pick_next_task(rq);
+	struct cfs_rq *cfs_rq;
+	for(i = 0; i < mrq.number; i++) {
+		cfs_rq = &mrq.all_runqueues[i]->cfs;
+
+		if (unlikely(!cfs_rq->nr_running))  {
+			continue;
+		}
+
+		se = pick_next_entity(cfs_rq);
+		if(s == 0) {
+			vruntimes = se->vruntime;
+			loc = i;
+			s++;
+		} else {
+			if(vruntimes > se->vruntime) {
+				vruntimes = se->vruntime; 
+				loc = i;
+			}
+		}
+	}
+	rq = mrq.all_runqueues[loc];
+	return rq;
+	//task has been found / rebalance the tree
+	/*cfs_rq = cfs_rq_of(se);
+	set_next_entity(cfs_rq, se);
+
+	hrtick_start_fair(rq, p);
+
+	if (likely(p))
+		return p;*/
+
+}
 /*
  * Pick up the highest-prio task:
  */
@@ -5414,71 +5458,6 @@ pick_next_task(struct rq *rq)
 	const struct sched_class *class;
 	struct task_struct *p;
 
-	// -dh from the "pick next task code
-	
-	int i;
-	u64 vruntimes;
-	struct sched_entity *se = NULL;
-
-	/*
-	 * Optimization: we know that if all tasks are in
-	 * the fair class we can call that function directly:
-	 */
-	/*if (likely(rq->nr_running == rq->cfs.nr_running)) {
-		struct cfs_rq *cfs_rq = &rq->cfs;
-		if (unlikely(!cfs_rq->nr_running)) {
-			p = NULL;
-		} else {
-		//	do {
-				se = pick_next_entity(cfs_rq);
-				set_next_entity(cfs_rq, se);
-	//			cfs_rq = group_cfs_rq(se);
-	//		} while (cfs_rq);
-
-			p = task_of(se);
-			hrtick_start_fair(rq, p);
-		}
-
-		if (likely(p))
-		return p;
-	} */
-	int s = 0;
-	int loc = 0;
-	if (likely(rq->nr_running == rq->cfs.nr_running)) {
-//		p = fair_sched_class.pick_next_task(rq);
-		struct cfs_rq *cfs_rq;
-		for(i = 0; i < mrq.number; i++) {
-			cfs_rq = &mrq.all_runqueues[i]->cfs;
-
-			if (unlikely(!cfs_rq->nr_running))  {
-				continue;
-			}
-	
-			se = pick_next_entity(cfs_rq);
-			if(s == 0) {
-				vruntimes = se->vruntime;
-				loc = i;
-				s++;
-			} else {
-				if(vruntimes > se->vruntime) {
-					vruntimes = se->vruntime; 
-					loc = i;
-				}
-			}
-		}
-		p = task_of(se);
-		//rq = mrq.all_runqueues[loc];
-		//task has been found / rebalance the tree
-		/*cfs_rq = cfs_rq_of(se);
-		set_next_entity(cfs_rq, se);
-
-		hrtick_start_fair(rq, p);
-
-		if (likely(p))
-			return p;*/
-	}
-	//if(se && task_cpu(p) != smp_processor_id()) { set_task_cpu(p, smp_processor_id()); }
-	// -dh
 
 	if (likely(rq->nr_running == rq->cfs.nr_running)) {
 		p = fair_sched_class.pick_next_task(rq);
