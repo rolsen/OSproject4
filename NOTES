@@ -1,2 +1,9 @@
+the interbench log:
+1: vanilla, no applications open on mac [1 processor]
+2: slowmo schedule() (empty for loop to 1000), many applications open on mac [2 processors]
+3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
+
+
 timeslice length: run vmstat (context-switches are the cs field)
- 
+
+

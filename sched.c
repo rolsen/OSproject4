@@ -5415,10 +5415,6 @@ asmlinkage void __sched schedule(void)
 	unsigned long *switch_count;
 	struct rq *rq;
 	int cpu;
-  int i = 0;
-
-  /* temp &&& -ro */
-  for(i; i<1000; i++);
 
 need_resched:
 	preempt_disable();
@@ -5480,8 +5476,9 @@ need_resched_nonpreemptible:
 		goto need_resched_nonpreemptible;
 
 	preempt_enable_no_resched();
-	if (need_resched())
+	/*if (need_resched())
 		goto need_resched;
+		-ro */
 }
 EXPORT_SYMBOL(schedule);
 
