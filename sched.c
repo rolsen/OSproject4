@@ -5507,8 +5507,8 @@ need_resched_nonpreemptible:
 	if (sched_feat(HRTICK))
 		hrtick_clear(rq);
 
-	//spin_lock_irq(&rq->lock);
-	double_rq_lock(rq, next_rq);
+	spin_lock_irq(&rq->lock);
+//	double_rq_lock(rq, next_rq);
 	update_rq_clock(rq);
 	clear_tsk_need_resched(prev);
 
@@ -5544,8 +5544,8 @@ need_resched_nonpreemptible:
 		cpu = smp_processor_id();
 		rq = cpu_rq(cpu);
 	} else
-		double_rq_unlock(rq, next_rq);
-		//spin_unlock_irq(&rq->lock);
+		spin_unlock_irq(&rq->lock);
+		//double_rq_unlock(rq, next_rq);
 
 
 	post_schedule(next_rq);
