@@ -5472,14 +5472,12 @@ need_resched_nonpreemptible:
 
 	post_schedule(rq);
 
-/*	if (unlikely(reacquire_kernel_lock(current) < 0))
+  if (unlikely(reacquire_kernel_lock(current) < 0))
 		goto need_resched_nonpreemptible;
-		*/
 
 	preempt_enable_no_resched();
-	/*if (need_resched())
-		goto need_resched;
-		-ro */
+/*  if (need_resched())
+		goto need_resched; -ro */
 }
 EXPORT_SYMBOL(schedule);
 
