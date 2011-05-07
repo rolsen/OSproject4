@@ -4,7 +4,7 @@ the interbench log:
 3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
 4: init 1, commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
 5: commented out schedule_debug(prev); in schedule, many applications open on mac, [2 processors]
-
+6: same
 
 
 timeslice length: run vmstat (context-switches are the cs field)
