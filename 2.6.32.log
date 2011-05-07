@@ -139,3 +139,50 @@ Compile	    173 +/- 258         1913		36.6
 Memload	   1.88 +/- 10.4        98.9		98.2
 
 
+
+Using 1400919 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105071710
+
+--- Benchmarking simulated cpu of Audio in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.758 +/- 1.53        8.87		 100	        100
+Video	  0.581 +/- 0.92        3.95		 100	        100
+X	   0.42 +/- 0.704       6.73		 100	        100
+Burn	  0.434 +/- 0.693       4.91		 100	        100
+Write	  0.759 +/- 4.67        50.3		99.3	       99.2
+Read	  0.112 +/- 0.227       2.41		 100	        100
+Compile	   5.62 +/- 23.1         238		95.5	       94.6
+Memload	  0.273 +/- 0.833       16.3		 100	        100
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.425 +/- 1.25        19.5		 100	       99.6
+X	   1.02 +/- 3.01        33.5		99.9	       98.2
+Burn	    2.4 +/- 6.54        50.5		98.2	       93.7
+Write	   2.73 +/- 16.9         246		91.6	       90.2
+Read	  0.263 +/- 0.912       21.8		 100	       99.9
+Compile	   8.12 +/- 24.1         360		80.8	       73.5
+Memload	  0.829 +/- 3.29          32		99.8	         98
+
+--- Benchmarking simulated cpu of X in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.011 +/- 0.139       2.16		 100	        100
+Video	  0.003 +/- 0.036      0.539		 100	        100
+Burn	   32.8 +/- 50.2         137		22.2	       12.5
+Write	   1.17 +/- 7.75          66		  92	       90.6
+Read	    0.1 +/- 1.73          30		99.3	       99.3
+Compile	     35 +/- 66           320		22.1	         14
+Memload	  0.068 +/- 1.04          18		99.3	       99.3
+
+--- Benchmarking simulated cpu of Gaming in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU
+None	      0 +/- 0              0		 100
+Video	      0 +/- 0              0		 100
+X	      0 +/- 0              0		 100
+Burn	   59.7 +/- 66.3         146		62.6
+Write	   4.97 +/- 24.6         241		95.3
+Read	  0.005 +/- 0.107       2.22		 100
+Compile	    117 +/- 132          302		46.1
+Memload	  0.065 +/- 1.36        28.1		99.9
+
+
