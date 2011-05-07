@@ -5427,7 +5427,7 @@ need_resched:
 	release_kernel_lock(prev);
 need_resched_nonpreemptible:
 
-	schedule_debug(prev);
+	//schedule_debug(prev); -ro
 
 	if (sched_feat(HRTICK))
 		hrtick_clear(rq);
