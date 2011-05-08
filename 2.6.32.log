@@ -142,7 +142,7 @@ Compile	    173 +/- 258         1913		36.6
 Memload	   1.88 +/- 10.4        98.9		98.2
 
 
-
+**** Unknown: maybe init 1, vanilla, no applications open on mac [2 processors] ****
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105071710
 

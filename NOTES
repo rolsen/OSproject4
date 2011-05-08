@@ -2,13 +2,16 @@ the interbench log:
 1: vanilla, no applications open on mac [1 processor]
 2: slowmo schedule() (empty for loop to 1000), many applications open on mac [2 processors]
 3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
+
+timeslice length: run vmstat (context-switches are the cs field)
+
+
+
+
+
+interbench fails, didn't output to log for the following:
 4: init 1, commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
 5: commented out schedule_debug(prev); in schedule, many applications open on mac, [2 processors]
 6: same
 7: init 1, vanilla, no applications open on mac [2 processors]
 8: same
-
-
-timeslice length: run vmstat (context-switches are the cs field)
-
-
