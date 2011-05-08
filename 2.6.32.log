@@ -1,3 +1,6 @@
+Rory's interbench log
+
+1: vanilla, no applications open on mac [1 processor]
 
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105051326
