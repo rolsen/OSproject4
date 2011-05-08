@@ -3,6 +3,12 @@ the interbench log:
 2: slowmo schedule() (empty for loop to 1000), many applications open on mac [2 processors]
 3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
 
+
+
+
+
+
+
 timeslice length: run vmstat (context-switches are the cs field)
 
 
