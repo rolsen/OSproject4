@@ -34,7 +34,7 @@
  * (to see the precise effective timeslice length of your workload,
  *  run vmstat and monitor the context-switches (cs) field)
  */
-unsigned int sysctl_sched_latency = 5000000ULL;
+unsigned int sysctl_sched_latency = 1000000ULL;
 
 /*
  * Minimal preemption granularity for CPU-bound tasks:
