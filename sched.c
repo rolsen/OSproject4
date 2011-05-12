@@ -5009,8 +5009,10 @@ void account_user_time(struct task_struct *p, cputime_t cputime,
 	cputime64_t tmp;
 
 	/* Add user time to process. */
-	p->utime = 1.5*cputime_add(p->utime, cputime);
-	p->utimescaled = 1.5*cputime_add(p->utimescaled, cputime_scaled);
+	p->utime = cputime_add((p->utime), cputime);
+	p->utime = cputime_add((p->utime), cputime);
+	p->utimescaled = cputime_add(p->utimescaled, cputime_scaled);
+	p->utimescaled = cputime_add(p->utimescaled, cputime_scaled);
 	account_group_user_time(p, cputime);
 
 	/* Add user time to cpustat. */
@@ -5427,7 +5429,7 @@ need_resched:
 	release_kernel_lock(prev);
 need_resched_nonpreemptible:
 
-	schedule_debug(prev);
+	//schedule_debug(prev);
 
 	if (sched_feat(HRTICK))
 		hrtick_clear(rq);
@@ -5444,7 +5446,7 @@ need_resched_nonpreemptible:
 		switch_count = &prev->nvcsw;
 	}
 
-	pre_schedule(rq, prev);
+	//pre_schedule(rq, prev);
 
 	if (unlikely(!rq->nr_running))
 		idle_balance(cpu, rq);
@@ -5476,8 +5478,8 @@ need_resched_nonpreemptible:
 		goto need_resched_nonpreemptible;
 
 	preempt_enable_no_resched();
-	if (need_resched())
-		goto need_resched;
+	//if (need_resched())
+	//	goto need_resched;
 }
 EXPORT_SYMBOL(schedule);
 
