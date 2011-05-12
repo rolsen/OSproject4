@@ -5415,8 +5415,11 @@ asmlinkage void __sched schedule(void)
 	unsigned long *switch_count;
 	struct rq *rq;
 	int cpu;
+	//static int i; // -ro
+	// i = 0; // -ro
 
 need_resched:
+	//++i;
 	preempt_disable();
 	cpu = smp_processor_id();
 	rq = cpu_rq(cpu);
@@ -5427,7 +5430,11 @@ need_resched:
 	release_kernel_lock(prev);
 need_resched_nonpreemptible:
 
-	//schedule_debug(prev); -ro
+	//if (i < 500)
+	//	printk("$$$schedule: pre schedule_debug(prev)\n"); // -ro
+	//schedule_debug(prev);
+	//if (i++ < 500)
+	//	printk("$$$schedule: post schedule_debug(prev)\n"); // -ro
 
 	if (sched_feat(HRTICK))
 		hrtick_clear(rq);
@@ -5472,12 +5479,13 @@ need_resched_nonpreemptible:
 
 	post_schedule(rq);
 
-  if (unlikely(reacquire_kernel_lock(current) < 0))
+	if (unlikely(reacquire_kernel_lock(current) < 0))
 		goto need_resched_nonpreemptible;
 
 	preempt_enable_no_resched();
-/*  if (need_resched())
-		goto need_resched; -ro */
+
+//	if (need_resched())
+//		goto need_resched;
 }
 EXPORT_SYMBOL(schedule);
 
