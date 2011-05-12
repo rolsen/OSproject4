@@ -1,9 +1,9 @@
 Rory's interbench log
 
-1: vanilla, no applications open on mac [1 processor]
 
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105051326
+1: vanilla, no applications open on mac [1 processor]
 
 --- Benchmarking simulated cpu of Video in the presence of simulated ---
 Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
@@ -17,10 +17,9 @@ Memload	   2.31 +/- 5.98          50		99.5	       93.9
 
 
 
-2: slowmo schedule() (empty for loop to 1000), many applications open on mac [2 processors]
-
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105051709
+2: slowmo schedule() (empty for loop to 1000), many applications open on mac [2 processors]
 
 --- Benchmarking simulated cpu of Video in the presence of simulated ---
 Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
@@ -34,10 +33,9 @@ Memload	  0.735 +/- 3.1         39.5		99.5	       98.4
 
 
 
-3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
-
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105051750
+3: commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
 
 --- Benchmarking simulated cpu of Video in the presence of simulated ---
 Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
@@ -51,9 +49,75 @@ Memload	  0.769 +/- 3.05        34.2		99.7	       98.1
 
 
 
-**** Unknown: maybe init 1, vanilla, no applications open on mac [2 processors] ****
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105071234
+4: init 1, commented out if (need_resched()) ...  in schedule(), many applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.382 +/- 1.37        18.8		 100	       99.4
+X	  0.755 +/- 2.25          22		 100	       98.8
+Burn	   8.87 +/- 14.6        65.6		89.5	       78.1
+Write	   3.67 +/- 23.3         372		89.1	       87.2
+Read	  0.341 +/- 0.88        16.7		 100	       99.9
+Compile	   2.62 +/- 7.53        90.3		97.2	       91.9
+Memload	   0.66 +/- 2.32        32.6		99.9	       99.2
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105071518
+5: commented out schedule_debug(prev); in schedule, many applications open on mac, [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.432 +/- 1.54        24.2		 100	       99.3
+X	   1.03 +/- 3.12        33.7		99.9	       98.3
+Burn	   10.2 +/- 17.9         107		83.5	       67.5
+Write	   6.64 +/- 32.2         519		80.7	         75
+Read	  0.416 +/- 1.5         34.7		99.9	       99.6
+Compile	   11.8 +/- 31.6         290		70.9	       60.1
+Memload	    1.1 +/- 4.57        79.8		99.1	       96.8
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105071538
+6: commented out schedule_debug(prev); in schedule, many applications open on mac, [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   1.02 +/- 3.74        83.4		99.7	       97.4
+X	  0.833 +/- 2.4         26.4		 100	       98.9
+Burn	   3.06 +/- 8.24        83.5		96.4	       90.5
+Write	   2.58 +/- 12.4         272		94.2	       89.8
+Read	  0.379 +/- 2.08        34.5		99.6	       98.9
+Compile	   3.87 +/- 10.2         140		96.6	       87.8
+Memload	    1.5 +/- 5.06        56.6		  99	       94.5
+
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105071645
+7: init 1, vanilla, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   1.23 +/- 3.66        28.3		 100	       97.6
+X	   1.17 +/- 3.28        30.8		 100	       98.1
+Burn	      3 +/- 7.77        60.9		97.2	       91.1
+Write	    5.4 +/- 25.3         373		82.7	       80.3
+Read	  0.398 +/- 1.08        16.9		 100	       99.9
+Compile	   7.77 +/- 22.4         264		82.4	       75.5
+Memload	  0.773 +/- 3.16        35.3		99.7	       98.1
+
+
+
+
 Using 1400919 loops per ms, running every load for 30 seconds
 Benchmarking kernel 2.6.32 at datestamp 201105071710
+8: init 1, vanilla, no applications open on mac [2 processors]
 
 --- Benchmarking simulated cpu of Video in the presence of simulated ---
 Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
@@ -64,6 +128,154 @@ Write	   2.73 +/- 16.9         246		91.6	       90.2
 Read	  0.263 +/- 0.912       21.8		 100	       99.9
 Compile	   8.12 +/- 24.1         360		80.8	       73.5
 Memload	  0.829 +/- 3.29          32		99.8	         98
+
+
+
+****************
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092129
+Comment: vanilla, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   1.61 +/- 4.69        28.6		 100	       95.9
+X	  0.582 +/- 1.44        18.9		 100	       99.6
+Burn	   11.7 +/- 18.3        76.1		84.5	       69.3
+Write	   2.24 +/- 11.9         241		  93	       90.9
+Read	  0.253 +/- 0.677       5.84		 100	        100
+Compile	   4.29 +/- 10.1         101		95.8	       85.7
+Memload	   0.82 +/- 3.19        41.8		99.7	       98.1
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092155
+Comment: vanilla, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   2.13 +/- 5.82        28.4		99.9	       92.9
+X	  0.839 +/- 2.55        23.8		 100	       98.3
+Burn	   4.16 +/- 9.22        68.5		96.3	       89.6
+Write	   1.49 +/- 11.9         300		96.5	       95.4
+Read	  0.309 +/- 0.942         17		 100	       99.9
+Compile	   4.89 +/- 10.8        77.3		94.6	       83.8
+Memload	  0.993 +/- 3.78          53		99.6	       97.4
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092214
+Comment: vanilla, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   1.77 +/- 5.11        27.1		99.9	       94.4
+X	   1.28 +/- 3.54        26.5		 100	       97.4
+Burn	   13.5 +/- 20           105		79.9	       65.2
+Write	   4.33 +/- 19.6         337		84.4	       81.2
+Read	  0.369 +/- 1.07          20		 100	       99.9
+Compile	    4.8 +/- 11.3         125		94.7	       84.1
+Memload	  0.699 +/- 2.31        33.3		99.9	       99.3
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092232
+Comment: vanilla, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.786 +/- 2.77        24.2		 100	       97.6
+X	   1.43 +/- 4.08        26.6		 100	       96.2
+Burn	   3.45 +/- 8.13        80.5		96.9	       90.9
+Write	  0.815 +/- 3.68        70.1		99.3	       97.9
+Read	  0.551 +/- 1.94        27.7		 100	       99.2
+Compile	   7.05 +/- 17.2         165		85.9	       78.7
+Memload	  0.879 +/- 2.85        31.4		 100	       98.8
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092302
+Comment: no resched, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.495 +/- 1.46        18.9		 100	       99.4
+X	  0.747 +/- 2.24        20.1		 100	       98.8
+Burn	   3.86 +/- 8.28        42.8		96.7	       90.9
+Write	   1.25 +/- 7.01         134		96.7	       95.7
+Read	  0.469 +/- 1.55        21.3		 100	       99.5
+Compile	   5.78 +/- 17           247		89.3	       81.6
+Memload	  0.715 +/- 2.57        35.7		99.9	       99.1
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092320
+Comment: no resched, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	   1.66 +/- 4.91        27.1		 100	       95.3
+X	   1.18 +/- 3.28        29.9		 100	       98.1
+Burn	   2.45 +/- 6.5         46.1		98.4	       93.5
+Write	  0.845 +/- 4.77         103		98.8	       98.2
+Read	  0.247 +/- 0.682       9.44		 100	        100
+Compile	   5.19 +/- 12.9         170		93.4	       83.9
+Memload	  0.847 +/- 3.6         67.7		99.8	       97.8
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105092355
+Comment: no resched no sched_debug, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.472 +/- 1.58        18.7		 100	       99.3
+X	  0.632 +/- 1.78        19.1		 100	       99.2
+Burn	   2.98 +/- 7.89        57.5		  97	       91.3
+Write	  0.978 +/- 6.3          149		  98	       97.5
+Read	  0.287 +/- 0.934       18.7		 100	       99.9
+Compile	   2.99 +/- 7.43        73.5		98.3	       92.9
+Memload	  0.802 +/- 3.13        32.1		 100	         98
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105100016
+Comment: no resched no sched_debug, no applications open on mac [2 processors]
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.583 +/- 2.08        19.6		 100	       98.7
+X	    1.3 +/- 4.03        41.9		99.8	         97
+Burn	   2.56 +/- 6.23        37.2		98.7	       94.3
+Write	  0.724 +/- 4.73         106		98.9	       98.7
+Read	  0.294 +/- 0.771       6.66		 100	        100
+Compile	   3.25 +/- 8.15         100		97.8	       90.3
+Memload	  0.548 +/- 1.99        30.6		 100	       99.5
+
+
+
+Using 1405790 loops per ms, running every load for 30 seconds
+Benchmarking kernel 2.6.32 at datestamp 201105100038
+Comment: no resched no sched_debug tues 12 37 am lots of mac applications running
+
+--- Benchmarking simulated cpu of Video in the presence of simulated ---
+Load	Latency +/- SD (ms)  Max Latency   % Desired CPU  % Deadlines Met
+None	  0.761 +/- 3.16          33		 100	       96.9
+X	   1.04 +/- 3.56        22.9		99.8	         96
+Burn	   17.5 +/- 24.2         144		73.5	       42.6
+Write	   1.18 +/- 16.2         650		97.1	       94.7
+Read	  0.342 +/- 1.82        35.7		99.8	       99.2
+Compile	   3.02 +/- 7.81        72.3		97.2	         90
+Memload	   1.35 +/- 5.04        67.6		98.7	       95.1
 
 
 
