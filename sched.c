@@ -2771,6 +2771,7 @@ static void finish_task_switch(struct rq *rq, struct task_struct *prev)
 /* assumes rq->lock is held */
 static inline void pre_schedule(struct rq *rq, struct task_struct *prev)
 {
+  printk("pre_schedule\n");
 	if (prev->sched_class->pre_schedule)
 		prev->sched_class->pre_schedule(rq, prev);
 }
@@ -2778,6 +2779,7 @@ static inline void pre_schedule(struct rq *rq, struct task_struct *prev)
 /* rq->lock is NOT held, but preemption is disabled */
 static inline void post_schedule(struct rq *rq)
 {
+  printk("post_schedule\n");
 	if (rq->post_schedule) {
 		unsigned long flags;
 
