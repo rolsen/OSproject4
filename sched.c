@@ -5444,7 +5444,7 @@ need_resched_nonpreemptible:
 		switch_count = &prev->nvcsw;
 	}
 
-	pre_schedule(rq, prev);
+	//pre_schedule(rq, prev);
 
 	if (unlikely(!rq->nr_running))
 		idle_balance(cpu, rq);
@@ -5476,8 +5476,8 @@ need_resched_nonpreemptible:
 		goto need_resched_nonpreemptible;
 
 	preempt_enable_no_resched();
-	if (need_resched())
-		goto need_resched;
+	//if (need_resched())
+	//	goto need_resched;
 }
 EXPORT_SYMBOL(schedule);
 
